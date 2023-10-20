@@ -1,0 +1,23 @@
+let handler = m => m
+
+let linkRegex = /(a(su|nj(([ie])ng|([ie])r)?)|me?me?k|ko?nto?l|ba?bi|fu?ck|ta(e|i)k|bangsat|g([iueo])bl([iueo])(k|g)|g ([iueo]) b l ([iueo]) (k|g)|a (n j (i n g|i r)?)s u|col(i|ay)|an?jg|b([ia])ngs([ia])?t|t([iuo])l([iuo])l)/i
+handler.before = function (m, { user }) {
+  if (m.isBaileys && m.fromMe) return true
+  if (/masuk|lanjutkan|banjir|(per)?panjang/g.exec(m.text)) return true
+  let chat = global.DATABASE.data.chats[m.chat]
+  let isGroupToxic = linkRegex.exec(m.text)
+
+  if (chat.antiToxic && isGroupToxic) {
+         m.reply(`*Terdeteksi ${name} Telah Mengirim Kata-Kata Aneh!*\n\n_“Barang Siapa Yang Beriman Kepada Allah Dan Hari Akhir Maka Hendaklah Dia Berkata Baik Atau Diam” (HR. al-Bukhari dan Muslim)`)
+        if (isBotAdmin && bot.restrict) {
+            await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+   global.db.data.users[m.sender].warn += 1
+   global.db.data.users[m.sender].banned = true
+    return conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: bang, participant: hapus }})
+        } else if (!bot.restrict) return m.reply('JANGAN ULANGI JIKA TIDAK MAU DI BANNED & KICK!')
+    }
+    return !0
+}
+
+module.exports = handler
+
